@@ -1,0 +1,33 @@
+{
+  "_doc": "Claims the data is allowed to overturn. Edit freely. Each is evaluated live on the dashboard: share = |subset within of| / |of|, with a Wilson 95% interval. Verdict: supported if the whole interval is on the claimed side of the threshold, refuted if it is entirely on the other side, inconclusive otherwise, insufficient below min_n. Filter keys: is_need, area[], tier[], kind[], country[] (ISO numeric), keywords[] (any), min_cost, min_dissatisfaction, min_pay, min_severity.",
+  "hypotheses": [
+    {
+      "id": "care-share",
+      "statement": "护理/照护相关需求占全部真实需求信号的 5% 以上",
+      "of": {"is_need": true},
+      "subset": {"keywords": ["护理", "照护", "护工", "陪护", "失能", "caregiver", "caregiving", "nursing", "home care"]},
+      "op": ">", "threshold": 0.05, "min_n": 200
+    },
+    {
+      "id": "health-pay",
+      "statement": "健康医疗类需求中，超过 30% 有明确的支付证据（支付意愿 ≥ 2）",
+      "of": {"is_need": true, "area": ["健康医疗"]},
+      "subset": {"min_pay": 2},
+      "op": ">", "threshold": 0.3, "min_n": 50
+    },
+    {
+      "id": "cost-implies-dissatisfaction",
+      "statement": "付出过真实代价（代价 ≥ 2）的需求里，超过一半对现有方案明确不满（不满 ≥ 2）",
+      "of": {"is_need": true, "min_cost": 2},
+      "subset": {"min_dissatisfaction": 2},
+      "op": ">", "threshold": 0.5, "min_n": 50
+    },
+    {
+      "id": "money-tier-coverage",
+      "statement": "招聘/广告（有钱在动）的信号不到全部真实需求信号的 20%",
+      "of": {"is_need": true},
+      "subset": {"tier": ["money"]},
+      "op": "<", "threshold": 0.2, "min_n": 200
+    }
+  ]
+}

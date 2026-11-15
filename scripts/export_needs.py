@@ -34,6 +34,7 @@ FIELDS = {
     "国家/地区": "region",
     "信息来源": "source",
     "补充": "extra",
+    "原始来源": "source_url",
 }
 
 # Dropdown option prefix -> stable machine key (keep in sync with .github/ISSUE_TEMPLATE/need.yml)
@@ -45,12 +46,13 @@ PAY_KEYS = {
     "不愿或无力付费": "none", "少量": "little", "中等": "moderate",
     "很多": "high", "不确定": "unsure",
 }
-SOURCE_KEYS = {"我亲身经历": "firsthand", "我亲眼观察": "observed", "听说或从网上": "hearsay"}
+SOURCE_KEYS = {"我亲身经历": "firsthand", "我亲眼观察": "observed", "听说或从网上": "hearsay",
+               "自动发现": "auto"}
 
 CSV_COLUMNS = [
     "id", "title", "url", "state", "status", "duplicate", "created_at", "updated_at",
-    "upvotes", "comments", "area", "area_en", "severity", "frequency_key",
-    "willingness_to_pay_key", "source_key", "region", "who", "problem", "workaround", "extra",
+    "upvotes", "comments", "signals", "area", "area_en", "severity", "frequency_key",
+    "willingness_to_pay_key", "source_key", "source_url", "region", "who", "problem", "workaround", "extra",
 ]
 
 
@@ -111,7 +113,15 @@ def parse_body(body):
     return out
 
 
-def to_record(issue):
+def load_signals():
+    """Independent sightings of each need found by discover/ (issue number -> list)."""
+    try:
+        return json.loads((ROOT / "data/discovery/signals.json").read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def to_record(issue, signals=None):
     labels = [l["name"] for l in issue.get("labels", [])]
     status = next((l.split(":", 1)[1] for l in labels if l.startswith("status:")), "")
     return {
@@ -125,6 +135,7 @@ def to_record(issue):
         "updated_at": issue.get("updated_at", issue["created_at"]),
         "upvotes": (issue.get("reactions") or {}).get("+1", 0),
         "comments": issue.get("comments", 0),
+        "signals": len((signals or {}).get(str(issue["number"]), [])),
         "labels": labels,
         **parse_body(issue.get("body")),
     }
@@ -164,7 +175,7 @@ def to_stats(needs):
 
     top = sorted(open_, key=lambda n: (n["upvotes"], n.get("severity") or 0), reverse=True)[:20]
     urgent = sorted(open_, key=score, reverse=True)[:20]
-    src_names = {"firsthand": "亲历", "observed": "观察", "hearsay": "转述", "unknown": "未知"}
+    src_names = {"firsthand": "亲历", "observed": "观察", "hearsay": "转述", "auto": "自动发现", "unknown": "未知"}
 
     lines = ["# 统计概览 / Stats", "",
              f"需求总数：**{len(live)}**（开放 {len(open_)}，另有 {len(needs) - len(live)} 条重复已合并）", ""]
@@ -203,7 +214,8 @@ def main():
     args = ap.parse_args()
 
     raw = json.loads(args.from_file.read_text(encoding="utf-8")) if args.from_file else fetch_issues()
-    needs = sorted((to_record(i) for i in raw if "pull_request" not in i), key=lambda n: n["id"])
+    signals = load_signals()
+    needs = sorted((to_record(i, signals) for i in raw if "pull_request" not in i), key=lambda n: n["id"])
     write_outputs(needs, args.out)
     print(f"exported {len(needs)} needs -> {args.out}")
 

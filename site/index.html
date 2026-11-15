@@ -3,63 +3,127 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>人类真实需求库 · Human Needs</title>
-  <meta name="description" content="一个开放、匿名、CC0 的全人类真实需求库。An open, anonymous, public-domain collection of real needs from people everywhere.">
+  <title>全球需求观测台 · Human Needs Monitor</title>
+  <meta name="description" content="持续监控全人类真实需求：哪里的人在为什么问题付出代价、证据有多强、谁已经在做。">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="top">
-    <div class="wrap">
-      <h1>人类真实需求库 <span class="en">Human Needs</span></h1>
-      <p class="tagline">真实的人遇到的真实问题。找一个值得解决的，去解决它。<br>
-        <span class="en">Real problems from real people. Find one worth solving.</span></p>
-      <div class="actions">
-        <a class="btn primary" id="submit-link" href="#">＋ 提交一条需求 / Submit a need</a>
-        <a class="btn" id="repo-link" href="#">GitHub</a>
-        <a class="btn" href="data/needs.json" download>JSON</a>
-        <a class="btn" href="data/needs.csv" download>CSV</a>
+<header class="top">
+  <div class="wrap top-row">
+    <div>
+      <h1>全球需求观测台 <span class="en">Human Needs Monitor</span></h1>
+      <p class="sub">哪里的人，在为什么问题付出代价？证据有多硬？谁已经在做，卡在哪？</p>
+    </div>
+    <div class="live" id="live" role="status" aria-live="polite">
+      <span class="dot"></span><span id="live-text">连接中…</span>
+    </div>
+  </div>
+  <div class="wrap feeds" id="feeds"></div>
+</header>
+
+<nav class="filters wrap" aria-label="筛选">
+  <input id="q" type="search" placeholder="搜索需求、人群、产品、地区…" autocomplete="off">
+  <select id="range" aria-label="时间范围">
+    <option value="7">近 7 天</option>
+    <option value="30" selected>近 30 天</option>
+    <option value="90">近 90 天</option>
+    <option value="0">全部</option>
+  </select>
+  <select id="tier" aria-label="数据层">
+    <option value="">全部数据层</option>
+    <option value="money">💰 有钱在动（招聘/广告）</option>
+    <option value="firsthand">🗣 一手抱怨</option>
+    <option value="suppressed">🔇 被主流平台删除</option>
+  </select>
+  <select id="minruler" aria-label="尺子分下限">
+    <option value="0">尺子分 ≥ 0</option>
+    <option value="4">尺子分 ≥ 4</option>
+    <option value="6">尺子分 ≥ 6</option>
+    <option value="8">尺子分 ≥ 8</option>
+  </select>
+  <label class="check"><input type="checkbox" id="needs-only" checked> 只看真实需求</label>
+  <div class="crumbs" id="crumbs"></div>
+</nav>
+
+<main class="wrap grid">
+  <section class="kpis span-all" id="kpis" aria-label="关键指标"></section>
+
+  <section class="card span-2" aria-labelledby="h-map">
+    <div class="card-head">
+      <h2 id="h-map">全球分布 <small>点击国家下钻</small></h2>
+      <div class="seg" id="map-metric" role="group" aria-label="地图指标">
+        <button data-v="count" class="on">需求信号数</button><button data-v="ruler">平均尺子分</button>
       </div>
     </div>
-  </header>
+    <div id="map" class="map"></div>
+    <p class="note" id="map-note"></p>
+  </section>
 
-  <main class="wrap">
-    <section class="summary" id="summary" aria-live="polite"></section>
+  <section class="card" aria-labelledby="h-area">
+    <div class="card-head"><h2 id="h-area">领域 <small>点击筛选</small></h2></div>
+    <div id="areas"></div>
+  </section>
 
-    <section class="controls" aria-label="筛选 / Filters">
-      <input id="q" type="search" placeholder="搜索问题、人群、地区… / Search" autocomplete="off">
-      <select id="area" aria-label="领域 / Area"><option value="">领域 / Area</option></select>
-      <select id="severity" aria-label="最低痛度 / Min severity">
-        <option value="">痛度 / Severity</option>
-        <option value="3">痛度 ≥ 3</option>
-        <option value="4">痛度 ≥ 4</option>
-        <option value="5">痛度 = 5</option>
-      </select>
-      <select id="source" aria-label="来源 / Source">
-        <option value="">来源 / Source</option>
-        <option value="firsthand">亲历 / First-hand</option>
-        <option value="observed">观察 / Observed</option>
-        <option value="hearsay">转述 / Hearsay</option>
-      </select>
-      <select id="sort" aria-label="排序 / Sort">
-        <option value="impact">最值得解决 / Impact</option>
-        <option value="upvotes">最多认同 / Most 👍</option>
-        <option value="new">最新 / Newest</option>
-        <option value="severity">最痛 / Most severe</option>
-      </select>
-      <label class="check"><input type="checkbox" id="open-only" checked> 只看未解决 / Open only</label>
-    </section>
+  <section class="card" aria-labelledby="h-ruler">
+    <div class="card-head"><h2 id="h-ruler">判断层：代价 × 支付意愿 <small>点格子筛选</small></h2></div>
+    <div id="matrix"></div>
+    <p class="note">右上角 = 已付出代价且愿意付钱。只有落在那里的需求才值得认真看。</p>
+  </section>
 
-    <p class="count" id="count"></p>
-    <ol class="list" id="list"></ol>
-    <div class="empty" id="empty" hidden></div>
-  </main>
+  <section class="card span-2" aria-labelledby="h-time">
+    <div class="card-head"><h2 id="h-time">信号时间线 <small>按数据层堆叠，点柱子看当天</small></h2></div>
+    <div id="timeline"></div>
+  </section>
 
-  <footer class="wrap foot">
-    数据以 <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a> 发布，每日从 GitHub Issues 自动更新。
-    排序分 = (👍 + 1) × 痛度，仅供参考。<br>
-    <span class="en">Data released under CC0, refreshed daily from GitHub Issues.</span>
-  </footer>
+  <section class="card span-all" aria-labelledby="h-clusters">
+    <div class="card-head">
+      <h2 id="h-clusters">需求簇 <small>同一需求的独立目击合并为一簇，点行看全部证据</small></h2>
+      <div class="seg" id="cluster-sort" role="group" aria-label="排序">
+        <button data-v="ruler" class="on">尺子分</button><button data-v="repetition">重复</button><button data-v="last">最新</button>
+      </div>
+    </div>
+    <div class="table-wrap"><table class="tbl" id="clusters"></table></div>
+  </section>
 
-  <script src="app.js"></script>
+  <section class="card span-2" aria-labelledby="h-peers">
+    <div class="card-head"><h2 id="h-peers">商业层：同行格局 <small>谁已在做、卡在哪</small></h2></div>
+    <div class="table-wrap"><table class="tbl" id="peers"></table></div>
+  </section>
+
+  <section class="card" aria-labelledby="h-health">
+    <div class="card-head"><h2 id="h-health">能力层：数据源健康</h2></div>
+    <div id="health"></div>
+  </section>
+
+  <section class="card span-2" aria-labelledby="h-hyp">
+    <div class="card-head"><h2 id="h-hyp">验证层：可被数据推翻的判断 <small>Wilson 95% 区间 · 12 周裁决轨迹</small></h2></div>
+    <div id="hyps"></div>
+  </section>
+
+  <section class="card" aria-labelledby="h-stream">
+    <div class="card-head"><h2 id="h-stream">原始信号流 <small>Hacker News · 实时 · 未经审核</small></h2></div>
+    <ol class="stream" id="stream"></ol>
+  </section>
+</main>
+
+<aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="drawer-title">
+  <div class="drawer-head">
+    <h2 id="drawer-title"></h2>
+    <button class="icon" id="drawer-close" aria-label="关闭">✕</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<footer class="wrap foot">
+  尺子分 = 代价 + 不满 + 支付意愿（各 0–3，由模型依据原帖证据打分）+ min(3, 独立目击数 − 1)，满分 12。
+  语料只保存改写后的结构化记录与原帖链接，不保存原文。数据以 CC0 发布。
+  <a href="https://github.com/010egg/human-needs">源代码与方法</a>
+</footer>
+
+<script src="vendor/d3.min.js"></script>
+<script src="vendor/topojson-client.min.js"></script>
+<script src="core.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

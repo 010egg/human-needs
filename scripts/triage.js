@@ -22,6 +22,7 @@ function computeLabels(body) {
   const src = field(body, '信息来源');
   if (src.startsWith('我亲身')) labels.push('来源:亲历');
   else if (src.startsWith('我亲眼')) labels.push('来源:观察');
+  else if (src.startsWith('自动发现')) labels.push('来源:自动发现');
   else if (src) labels.push('来源:转述');
   return labels;
 }

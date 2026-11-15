@@ -7,7 +7,7 @@ on:
     branches: [main]
     paths: ["site/**", "data/**", ".github/workflows/pages.yml"]
   workflow_run:
-    workflows: ["Export needs"]
+    workflows: ["Export needs", "Discover needs"]
     types: [completed]
   workflow_dispatch:
 permissions:
@@ -33,6 +33,8 @@ jobs:
           mkdir -p _site/data
           cp -r site/. _site/
           cp data/needs.json data/needs.csv _site/data/
+          # Fallback copy; the dashboard polls the live branch on raw.githubusercontent.com first.
+          cp -r data/discovery _site/data/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

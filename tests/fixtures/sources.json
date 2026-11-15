@@ -1,0 +1,15 @@
+{
+  "hackernews": {"hits": [
+    {"objectID": "101", "created_at_i": 1763200000, "comment_text": "My parents are 80 and every single time they need a doctor I have to take a day off. The clinic only books online and they have no idea how to use it.<p>I wish there was something simpler.", "story_title": "Ask HN: What problem do you face every week?"},
+    {"objectID": "102", "created_at_i": 1763200100, "title": "Show HN: we launched our promo code tool", "story_text": "Launching my new SaaS, promo code inside, hiring too, big launch today for everyone"},
+    {"objectID": "103", "created_at_i": 1763200200, "comment_text": "ok"}
+  ]},
+  "v2ex": [
+    {"id": 9001, "title": "老人看病挂号太难了，有没有什么办法", "content": "我妈 75 岁，医院现在只能在小程序挂号，她不会用，每次都要我请假回老家帮她挂，太难了，有没有什么办法？", "url": "https://www.v2ex.com/t/9001", "created": 1763200300, "node": {"name": "life"}},
+    {"id": 9002, "title": "内推 招聘 后端", "content": "我们在招聘后端工程师，欢迎内推", "created": 1763200400, "node": {"name": "jobs"}}
+  ],
+  "reddit": {"data": {"children": [
+    {"data": {"id": "abc", "permalink": "/r/Teachers/comments/abc/x/", "title": "Spending my own money on supplies again", "selftext": "Every month I spend around $100 of my own money on classroom supplies because the school can't afford them. I'm exhausted and struggling with rent.", "created_utc": 1763200500, "score": 40, "num_comments": 12}},
+    {"data": {"id": "def", "stickied": true, "permalink": "/r/Teachers/comments/def/", "title": "Weekly thread", "selftext": "", "created_utc": 1763200600}}
+  ]}}
+}
