@@ -1,0 +1,43 @@
+# Publishes site/ + data/ to GitHub Pages.
+# Enable once: Settings → Pages → Source: GitHub Actions.
+# Pushes made with GITHUB_TOKEN (the daily export) don't trigger `push`, hence `workflow_run`.
+name: Pages
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", "data/**", ".github/workflows/pages.yml"]
+  workflow_run:
+    workflows: ["Export needs", "Discover needs"]
+    types: [completed]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Assemble site
+        run: |
+          mkdir -p _site/data
+          cp -r site/. _site/
+          cp data/needs.json data/needs.csv _site/data/
+          # Fallback copy; the dashboard polls the live branch on raw.githubusercontent.com first.
+          cp -r data/discovery _site/data/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -9,7 +9,7 @@
 
 1. 点击 **[Issues → New issue → 提交一条需求](../../issues/new/choose)**
 2. 按表单填写：你（或你观察到的人）遇到了什么问题、多痛、多频繁、现在怎么凑合
-3. 提交即可。机器人会自动打标签，数据每天汇总到 [`data/needs.json`](data/needs.json)
+3. 提交即可。机器人会自动打标签、检查是否误填了个人信息，数据每天汇总到 [`data/needs.json`](data/needs.json)
 
 不会用 GitHub？可以把需求发给任何一位贡献者代为提交。
 
@@ -17,13 +17,22 @@
 - ❌ "需要一个帮老人挂号的 App"
 - ✅ "我妈 70 岁，医院只能线上挂号，她不会用手机，每次都要我请假回去帮她挂"
 
+## 自动发现与看板 / Discovery & monitor
+
+除了人工提交，仓库里还有一条**自动需求发现流水线**：每 6 小时从招聘帖、广告库、技术社区、Telegram 公开频道等分层数据源采集信号，用 Claude 按"重复、代价、不满、支付意愿"四项打分，过线的才建成 issue（标 `来源:自动发现`，等人工审核）。
+
+**[全球需求观测台](https://010egg.github.io/human-needs/)** 实时拉取这些数据：世界地图、领域、代价×支付矩阵、时间线都可以点击下钻，需求簇可以展开看每一条证据，还有同行格局、数据源健康，以及一组**允许被数据推翻的假设**。
+
+方法说明见 [docs/method.md](docs/method.md)。
+
 ## 浏览需求 / Browse
 
 | 方式 | 链接 |
 |---|---|
-| 按领域筛选 | [Labels](../../labels) — `area:健康` `area:教育` … |
+| 实时看板（筛选、下钻、明细） | **[010egg.github.io/human-needs](https://010egg.github.io/human-needs/)** |
+| 按领域筛选 | [Labels](../../labels) — `area:健康医疗` `area:教育学习` … |
 | 最受认同（👍 最多） | [按 👍 排序](../../issues?q=is%3Aissue+label%3Aneed+sort%3Areactions-%2B1-desc) |
-| 机器可读数据 | [`data/needs.json`](data/needs.json) · 统计 [`data/STATS.md`](data/STATS.md) |
+| 机器可读数据 | [`needs.json`](data/needs.json) · [`needs.csv`](data/needs.csv) · 统计 [`STATS.md`](data/STATS.md) · [字段说明](docs/schema.md) |
 
 **给你也有的需求点 👍**——这是衡量一个需求有多普遍的最简单方式。在评论里补充你的情况更好。
 
@@ -39,12 +48,37 @@
 
 ```
 .github/ISSUE_TEMPLATE/need.yml   需求提交表单
-.github/workflows/                自动打标签、每日导出
-scripts/export_needs.py           把 Issues 导出为 JSON + 统计
+.github/workflows/label.yml       自动打标签 + 隐私检查（新建/编辑 issue 时）
+.github/workflows/export.yml      每日导出数据
+.github/workflows/discover.yml    自动需求发现（每 6 小时）
+.github/workflows/pages.yml       发布看板到 GitHub Pages
+.github/workflows/test.yml        测试
+scripts/export_needs.py           Issues → JSON / CSV / 统计
+scripts/triage.js                 打标签与隐私检查逻辑
 scripts/setup_labels.sh           初始化标签
-data/needs.json                   全部需求（自动生成）
-data/STATS.md                     统计概览（自动生成）
+discover/                         自动发现：数据源、初筛、Claude 审核打分、语料库、发布
+site/                             实时看板（纯静态；d3 与世界地图已内置于 site/vendor）
+data/                             needs.json · needs.csv · STATS.md（自动生成）
+data/discovery/                   语料库、运行日志、假设、去重状态（自动生成，hypotheses.json 手写）
 docs/schema.md                    数据字段说明
+tests/                            测试
+```
+
+### 维护者初始化 / Maintainer setup
+
+1. `REPO=010egg/human-needs bash scripts/setup_labels.sh`（需要 `gh` 已登录）
+2. Settings → Pages → Source 选 **GitHub Actions**
+3. Settings → General → Features 勾选 **Discussions**（表单里链接到了它）
+4. Settings → Secrets 添加 `ANTHROPIC_API_KEY`（可选：Reddit、Meta 广告库凭据，见 [docs/method.md](docs/method.md)）
+5. Actions → Discover needs → Run workflow（默认 dry run）检查判断质量；之后定时任务会自动运行
+6. Actions → Export needs → Run workflow，生成第一份数据并发布看板
+
+### 本地开发 / Local development
+
+```bash
+pip install -r discover/requirements.txt
+python -m unittest discover tests && node --test tests/*.test.js
+cd site && python -m http.server   # 然后打开 http://localhost:8000/
 ```
 
 ## 参与 / Contribute

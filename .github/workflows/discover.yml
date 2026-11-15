@@ -1,0 +1,53 @@
+# Automatic need discovery. Needs repository secret ANTHROPIC_API_KEY.
+# Optional secrets REDDIT_CLIENT_ID / REDDIT_CLIENT_SECRET enable the Reddit source.
+# Runs every 6 hours; each run creates at most `max_new_issues_per_run` issues (discover/config.json).
+name: Discover needs
+on:
+  schedule:
+    - cron: "41 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (no issues created)"
+        type: boolean
+        default: true
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: discover
+  cancel-in-progress: false
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r discover/requirements.txt
+      - name: Discover
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          MODE: ${{ (github.event_name == 'workflow_dispatch' && inputs.dry_run) && '--dry-run' || '--publish' }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::warning::ANTHROPIC_API_KEY secret is not set; skipping discovery."
+            exit 0
+          fi
+          python -m discover.run $MODE --report /tmp/report.json
+          { echo '## Discovery report'; echo '```json'; cat /tmp/report.json; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit state
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/discovery/
+          if git diff --cached --quiet; then echo "no state change"; else
+            git commit -m "data: discovery state"
+            git pull --rebase && git push
+          fi

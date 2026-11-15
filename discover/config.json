@@ -1,0 +1,96 @@
+{
+  "max_posts_per_run": 80,
+  "batch_size": 10,
+  "min_confidence": 0.7,
+  "min_ruler_score": 4,
+  "max_new_issues_per_run": 10,
+  "seen_retention_days": 90,
+  "lookback_hours": 30,
+  "model": "claude-opus-5-5",
+  "effort": "medium",
+  "sources": {
+    "hackernews": {
+      "enabled": true,
+      "queries": [
+        "I wish there was",
+        "is there a way to",
+        "struggling with",
+        "frustrated with",
+        "nobody helps",
+        "can't afford",
+        "my elderly",
+        "my parents can't",
+        "I have no idea how to",
+        "waste hours",
+        "every single time",
+        "there is no app"
+      ],
+      "hits_per_query": 15,
+      "tier": "firsthand"
+    },
+    "v2ex": {
+      "enabled": true,
+      "endpoints": [
+        "topics/latest.json",
+        "topics/hot.json"
+      ],
+      "tier": "firsthand"
+    },
+    "reddit": {
+      "enabled": true,
+      "subreddits": [
+        "AgingParents",
+        "disability",
+        "Teachers",
+        "smallbusiness",
+        "povertyfinance",
+        "legaladvice",
+        "Nurse",
+        "Parenting",
+        "caregivers",
+        "blind",
+        "Renters",
+        "KitchenConfidential"
+      ],
+      "per_subreddit": 15,
+      "tier": "firsthand"
+    },
+    "hn_hiring": {
+      "enabled": true,
+      "tier": "money",
+      "max_posts": 40
+    },
+    "meta_ads": {
+      "enabled": true,
+      "tier": "money",
+      "countries": [
+        "DE",
+        "FR",
+        "ES",
+        "IT"
+      ],
+      "search_terms": [
+        "caregiver",
+        "elderly care",
+        "disability",
+        "rent help",
+        "debt relief",
+        "childcare",
+        "mental health",
+        "legal aid"
+      ],
+      "per_term": 10
+    },
+    "telegram": {
+      "enabled": false,
+      "tier": "suppressed",
+      "channels": [],
+      "_note": "Add public channel usernames you have vetted. Content is screened like any other source."
+    },
+    "inbox": {
+      "enabled": true,
+      "tier": "firsthand",
+      "_note": "Reads INBOX_DIR/*.jsonl when that env var is set (local runs only)."
+    }
+  }
+}
