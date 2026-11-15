@@ -9,7 +9,7 @@
 
 1. 点击 **[Issues → New issue → 提交一条需求](../../issues/new/choose)**
 2. 按表单填写：你（或你观察到的人）遇到了什么问题、多痛、多频繁、现在怎么凑合
-3. 提交即可。机器人会自动打标签，数据每天汇总到 [`data/needs.json`](data/needs.json)
+3. 提交即可。机器人会自动打标签、检查是否误填了个人信息，数据每天汇总到 [`data/needs.json`](data/needs.json)
 
 不会用 GitHub？可以把需求发给任何一位贡献者代为提交。
 
@@ -21,9 +21,10 @@
 
 | 方式 | 链接 |
 |---|---|
-| 按领域筛选 | [Labels](../../labels) — `area:健康` `area:教育` … |
+| 网页浏览（搜索、筛选、排序） | **[010egg.github.io/human-needs](https://010egg.github.io/human-needs/)** |
+| 按领域筛选 | [Labels](../../labels) — `area:健康医疗` `area:教育学习` … |
 | 最受认同（👍 最多） | [按 👍 排序](../../issues?q=is%3Aissue+label%3Aneed+sort%3Areactions-%2B1-desc) |
-| 机器可读数据 | [`data/needs.json`](data/needs.json) · 统计 [`data/STATS.md`](data/STATS.md) |
+| 机器可读数据 | [`needs.json`](data/needs.json) · [`needs.csv`](data/needs.csv) · 统计 [`STATS.md`](data/STATS.md) · [字段说明](docs/schema.md) |
 
 **给你也有的需求点 👍**——这是衡量一个需求有多普遍的最简单方式。在评论里补充你的情况更好。
 
@@ -39,12 +40,31 @@
 
 ```
 .github/ISSUE_TEMPLATE/need.yml   需求提交表单
-.github/workflows/                自动打标签、每日导出
-scripts/export_needs.py           把 Issues 导出为 JSON + 统计
+.github/workflows/label.yml       自动打标签 + 隐私检查（新建/编辑 issue 时）
+.github/workflows/export.yml      每日导出数据
+.github/workflows/pages.yml       发布浏览网站到 GitHub Pages
+.github/workflows/test.yml        测试
+scripts/export_needs.py           Issues → JSON / CSV / 统计
+scripts/triage.js                 打标签与隐私检查逻辑
 scripts/setup_labels.sh           初始化标签
-data/needs.json                   全部需求（自动生成）
-data/STATS.md                     统计概览（自动生成）
+site/                             浏览网站（纯静态，无需构建）
+data/                             needs.json · needs.csv · STATS.md（自动生成）
 docs/schema.md                    数据字段说明
+tests/                            测试
+```
+
+### 维护者初始化 / Maintainer setup
+
+1. `REPO=010egg/human-needs bash scripts/setup_labels.sh`（需要 `gh` 已登录）
+2. Settings → Pages → Source 选 **GitHub Actions**
+3. Settings → General → Features 勾选 **Discussions**（表单里链接到了它）
+4. Actions → Export needs → Run workflow，生成第一份数据并发布网站
+
+### 本地开发 / Local development
+
+```bash
+python -m unittest discover tests && node --test tests/*.test.js
+python -m http.server   # 然后打开 http://localhost:8000/site/
 ```
 
 ## 参与 / Contribute

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>人类真实需求库 · Human Needs</title>
+  <meta name="description" content="一个开放、匿名、CC0 的全人类真实需求库。An open, anonymous, public-domain collection of real needs from people everywhere.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <h1>人类真实需求库 <span class="en">Human Needs</span></h1>
+      <p class="tagline">真实的人遇到的真实问题。找一个值得解决的，去解决它。<br>
+        <span class="en">Real problems from real people. Find one worth solving.</span></p>
+      <div class="actions">
+        <a class="btn primary" id="submit-link" href="#">＋ 提交一条需求 / Submit a need</a>
+        <a class="btn" id="repo-link" href="#">GitHub</a>
+        <a class="btn" href="data/needs.json" download>JSON</a>
+        <a class="btn" href="data/needs.csv" download>CSV</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="summary" id="summary" aria-live="polite"></section>
+
+    <section class="controls" aria-label="筛选 / Filters">
+      <input id="q" type="search" placeholder="搜索问题、人群、地区… / Search" autocomplete="off">
+      <select id="area" aria-label="领域 / Area"><option value="">领域 / Area</option></select>
+      <select id="severity" aria-label="最低痛度 / Min severity">
+        <option value="">痛度 / Severity</option>
+        <option value="3">痛度 ≥ 3</option>
+        <option value="4">痛度 ≥ 4</option>
+        <option value="5">痛度 = 5</option>
+      </select>
+      <select id="source" aria-label="来源 / Source">
+        <option value="">来源 / Source</option>
+        <option value="firsthand">亲历 / First-hand</option>
+        <option value="observed">观察 / Observed</option>
+        <option value="hearsay">转述 / Hearsay</option>
+      </select>
+      <select id="sort" aria-label="排序 / Sort">
+        <option value="impact">最值得解决 / Impact</option>
+        <option value="upvotes">最多认同 / Most 👍</option>
+        <option value="new">最新 / Newest</option>
+        <option value="severity">最痛 / Most severe</option>
+      </select>
+      <label class="check"><input type="checkbox" id="open-only" checked> 只看未解决 / Open only</label>
+    </section>
+
+    <p class="count" id="count"></p>
+    <ol class="list" id="list"></ol>
+    <div class="empty" id="empty" hidden></div>
+  </main>
+
+  <footer class="wrap foot">
+    数据以 <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a> 发布，每日从 GitHub Issues 自动更新。
+    排序分 = (👍 + 1) × 痛度，仅供参考。<br>
+    <span class="en">Data released under CC0, refreshed daily from GitHub Issues.</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

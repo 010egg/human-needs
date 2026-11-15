@@ -1,0 +1,84 @@
+[
+  {
+    "number": 1,
+    "title": "[需求] 测试样例 A：多行问题描述",
+    "html_url": "https://github.com/example/repo/issues/1",
+    "state": "open",
+    "created_at": "2026-01-01T00:00:00Z",
+    "updated_at": "2026-01-01T01:00:00Z",
+    "comments": 1,
+    "reactions": {
+      "+1": 5
+    },
+    "labels": [
+      {
+        "name": "need"
+      },
+      {
+        "name": "status:已整理"
+      },
+      {
+        "name": "area:健康医疗"
+      },
+      {
+        "name": "痛度:4"
+      },
+      {
+        "name": "来源:亲历"
+      }
+    ],
+    "body": "### 遇到了什么问题？/ What is the problem?\r\n\r\n第一行\r\n第二行 | 含竖线\r\n\r\n### 谁有这个需求？/ Who has this need?\r\n\r\n测试人群\r\n\r\n### 所属领域 / Area\r\n\r\n健康医疗 / Health\r\n\r\n### 现在怎么凑合解决？/ Current workaround\r\n\r\n凑合方案\r\n\r\n### 有多痛？/ How painful?\r\n\r\n4 - 严重困扰 / Serious hardship\r\n\r\n### 多频繁？/ How often?\r\n\r\n每天 / Daily\r\n\r\n### 愿意为解决它付出多少？/ Willingness to pay\r\n\r\n中等（每月一顿饭钱）/ Moderate\r\n\r\n### 国家/地区 / Country or region\r\n\r\n中国·四川\r\n\r\n### 信息来源 / Source\r\n\r\n我亲身经历 / First-hand (my own experience)\r\n\r\n### 补充（可选）/ Anything else\r\n\r\n_No response_\r\n\r\n### 确认 / Confirm\r\n\r\n- [X] 我没有填写任何可识别个人身份的信息，并同意本内容以 CC0 公有领域发布 / No personal identifying info; I release this under CC0"
+  },
+  {
+    "number": 2,
+    "title": "Sample B without prefix",
+    "html_url": "https://github.com/example/repo/issues/2",
+    "state": "open",
+    "created_at": "2026-01-02T00:00:00Z",
+    "updated_at": "2026-01-02T01:00:00Z",
+    "comments": 2,
+    "reactions": {
+      "+1": 1
+    },
+    "labels": [
+      {
+        "name": "need"
+      },
+      {
+        "name": "status:待整理"
+      }
+    ],
+    "body": "### 遇到了什么问题？/ What is the problem?\r\n\r\nproblem b\r\n\r\n### 谁有这个需求？/ Who has this need?\r\n\r\ngroup b\r\n\r\n### 所属领域 / Area\r\n\r\n心理与社交 / Mental health & Social\r\n\r\n### 现在怎么凑合解决？/ Current workaround\r\n\r\n_No response_\r\n\r\n### 有多痛？/ How painful?\r\n\r\n2 - 比较麻烦 / Inconvenient\r\n\r\n### 多频繁？/ How often?\r\n\r\n一生中少数关键时刻 / Rare but critical\r\n\r\n### 愿意为解决它付出多少？/ Willingness to pay\r\n\r\n_No response_\r\n\r\n### 国家/地区 / Country or region\r\n\r\nKenya\r\n\r\n### 信息来源 / Source\r\n\r\n听说或从网上看到 / Heard or read about it\r\n\r\n### 补充（可选）/ Anything else\r\n\r\n_No response_\r\n\r\n### 确认 / Confirm\r\n\r\n- [X] 我没有填写任何可识别个人身份的信息，并同意本内容以 CC0 公有领域发布 / No personal identifying info; I release this under CC0"
+  },
+  {
+    "number": 3,
+    "title": "[需求] 重复样例",
+    "html_url": "https://github.com/example/repo/issues/3",
+    "state": "closed",
+    "created_at": "2026-01-03T00:00:00Z",
+    "updated_at": "2026-01-03T01:00:00Z",
+    "comments": 3,
+    "reactions": {
+      "+1": 0
+    },
+    "labels": [
+      {
+        "name": "need"
+      },
+      {
+        "name": "duplicate"
+      }
+    ],
+    "body": "### 遇到了什么问题？/ What is the problem?\r\n\r\ndup\r\n\r\n### 谁有这个需求？/ Who has this need?\r\n\r\nx\r\n\r\n### 所属领域 / Area\r\n\r\n其他 / Other\r\n\r\n### 现在怎么凑合解决？/ Current workaround\r\n\r\n_No response_\r\n\r\n### 有多痛？/ How painful?\r\n\r\n1 - 有点不方便 / Minor annoyance\r\n\r\n### 多频繁？/ How often?\r\n\r\n每周 / Weekly\r\n\r\n### 愿意为解决它付出多少？/ Willingness to pay\r\n\r\n_No response_\r\n\r\n### 国家/地区 / Country or region\r\n\r\n_No response_\r\n\r\n### 信息来源 / Source\r\n\r\n我亲眼观察到身边人 / Observed directly\r\n\r\n### 补充（可选）/ Anything else\r\n\r\n_No response_\r\n\r\n### 确认 / Confirm\r\n\r\n- [X] 我没有填写任何可识别个人身份的信息，并同意本内容以 CC0 公有领域发布 / No personal identifying info; I release this under CC0"
+  },
+  {
+    "number": 4,
+    "title": "a PR",
+    "pull_request": {},
+    "html_url": "",
+    "state": "open",
+    "created_at": "",
+    "labels": [],
+    "body": ""
+  }
+]
