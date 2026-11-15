@@ -1,0 +1,33 @@
+name: Auto label
+on:
+  issues:
+    types: [opened, edited]
+permissions:
+  issues: write
+jobs:
+  label:
+    if: contains(github.event.issue.labels.*.name, 'need')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body || '';
+            const field = (h) => {
+              const m = body.match(new RegExp('### ' + h + '[^\\n]*\\n+([^\\n]+)'));
+              return m ? m[1].trim() : '';
+            };
+            const labels = [];
+            const area = field('所属领域');
+            if (area && area !== '_No response_') labels.push('area:' + area.split(' / ')[0]);
+            const sev = field('有多痛').match(/^(\d)/);
+            if (sev) labels.push('痛度:' + sev[1]);
+            const src = field('信息来源');
+            if (src.startsWith('我亲身')) labels.push('来源:亲历');
+            else if (src.startsWith('我亲眼')) labels.push('来源:观察');
+            else if (src) labels.push('来源:转述');
+            if (labels.length) {
+              await github.rest.issues.addLabels({
+                ...context.repo, issue_number: context.payload.issue.number, labels
+              });
+            }

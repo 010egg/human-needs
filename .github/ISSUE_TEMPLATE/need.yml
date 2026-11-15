@@ -1,0 +1,125 @@
+name: 提交一条需求 / Submit a need
+description: 记录一个真实存在的问题或需求 / Record a real problem someone faces
+title: "[需求] "
+labels: ["need", "status:待整理"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢分享！请描述**问题本身**，而不是你想到的解决方案。
+        ⚠️ 请勿填写真实姓名、电话、住址、证件号等个人信息。任何语言都可以。
+        Describe the *problem*, not a solution. No personal identifying info. Any language is fine.
+  - type: textarea
+    id: problem
+    attributes:
+      label: 遇到了什么问题？/ What is the problem?
+      description: 具体的场景：什么时候、在做什么、卡在哪里。
+      placeholder: 我妈 70 岁，医院只能线上挂号，她不会用手机，每次都要我请假回去帮她挂……
+    validations:
+      required: true
+  - type: input
+    id: who
+    attributes:
+      label: 谁有这个需求？/ Who has this need?
+      placeholder: 例：独居老人、外卖骑手、乡村教师、小餐馆老板、视障人士
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: 所属领域 / Area
+      options:
+        - 健康医疗 / Health
+        - 教育学习 / Education
+        - 工作收入 / Work & Income
+        - 住房居住 / Housing
+        - 食物饮水 / Food & Water
+        - 交通出行 / Transport
+        - 金融财务 / Finance
+        - 法律权益 / Legal & Rights
+        - 家庭养育 / Family & Care
+        - 养老 / Elderly
+        - 无障碍 / Accessibility
+        - 心理与社交 / Mental health & Social
+        - 环境能源 / Environment & Energy
+        - 公共服务 / Public services
+        - 数字工具 / Digital tools
+        - 安全 / Safety
+        - 其他 / Other
+    validations:
+      required: true
+  - type: textarea
+    id: workaround
+    attributes:
+      label: 现在怎么凑合解决？/ Current workaround
+      description: 现在是怎么应付的？花了多少时间/钱？为什么不好用？
+    validations:
+      required: false
+  - type: dropdown
+    id: severity
+    attributes:
+      label: 有多痛？/ How painful?
+      options:
+        - 1 - 有点不方便 / Minor annoyance
+        - 2 - 比较麻烦 / Inconvenient
+        - 3 - 明显影响生活或工作 / Clearly affects life or work
+        - 4 - 严重困扰 / Serious hardship
+        - 5 - 影响生存、健康或安全 / Threatens survival, health or safety
+    validations:
+      required: true
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: 多频繁？/ How often?
+      options:
+        - 每天 / Daily
+        - 每周 / Weekly
+        - 每月 / Monthly
+        - 每年几次 / A few times a year
+        - 一生中少数关键时刻 / Rare but critical
+    validations:
+      required: true
+  - type: dropdown
+    id: pay
+    attributes:
+      label: 愿意为解决它付出多少？/ Willingness to pay
+      options:
+        - 不愿或无力付费 / Can't or won't pay
+        - 少量（一杯咖啡）/ A little
+        - 中等（每月一顿饭钱）/ Moderate
+        - 很多，只要真能解决 / A lot, if it really works
+        - 不确定 / Not sure
+    validations:
+      required: false
+  - type: input
+    id: region
+    attributes:
+      label: 国家/地区 / Country or region
+      description: 只写到国家或省/州级别即可 / Country or state level only
+      placeholder: 例：中国·四川 / Kenya / Brazil·São Paulo
+    validations:
+      required: false
+  - type: dropdown
+    id: source
+    attributes:
+      label: 信息来源 / Source
+      options:
+        - 我亲身经历 / First-hand (my own experience)
+        - 我亲眼观察到身边人 / Observed directly
+        - 听说或从网上看到 / Heard or read about it
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: 补充（可选）/ Anything else
+      description: 已尝试过的产品、相关链接、数据、你设想的解决方向等
+    validations:
+      required: false
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: 确认 / Confirm
+      options:
+        - label: 我没有填写任何可识别个人身份的信息，并同意本内容以 CC0 公有领域发布 / No personal identifying info; I release this under CC0
+          required: true
