@@ -1,1 +1,36 @@
-[]
+[
+  {
+    "id": 1,
+    "title": "示例：不会用智能手机的老人无法线上挂号",
+    "url": "https://github.com/010egg/human-needs/issues/1",
+    "state": "open",
+    "status": "待整理",
+    "duplicate": false,
+    "created_at": "2026-11-15T11:53:17Z",
+    "updated_at": "2026-11-15T11:53:24Z",
+    "upvotes": 0,
+    "comments": 0,
+    "signals": 0,
+    "labels": [
+      "need",
+      "status:待整理",
+      "area:养老",
+      "痛度:4",
+      "来源:观察"
+    ],
+    "problem": "（示例需求）家里老人 70 多岁，当地医院取消了现场挂号窗口，只能用手机 App 或公众号预约。老人不会操作智能手机，看不清小字，验证码也收不明白。每次看病都得子女请假回去帮忙挂号，急病时更麻烦。",
+    "who": "不会用智能手机的老年人，以及他们在外地工作的子女",
+    "area": "养老",
+    "workaround": "子女远程代挂号，或者请邻居帮忙；有时直接去医院排队找志愿者，经常挂不上号，白跑一趟。",
+    "severity": 4,
+    "frequency": "每月 / Monthly",
+    "willingness_to_pay": "少量（一杯咖啡）/ A little",
+    "region": "中国",
+    "source": "我亲眼观察到身边人 / Observed directly",
+    "extra": "这是一条示例需求，用来展示该怎么写：描述问题和场景，而不是直接给出解决方案。",
+    "area_en": "Elderly",
+    "frequency_key": "monthly",
+    "willingness_to_pay_key": "little",
+    "source_key": "observed"
+  }
+]

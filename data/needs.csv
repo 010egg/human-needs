@@ -1,1 +1,2 @@
-﻿id,title,url,state,status,duplicate,created_at,updated_at,upvotes,comments,area,area_en,severity,frequency_key,willingness_to_pay_key,source_key,region,who,problem,workaround,extra
+﻿id,title,url,state,status,duplicate,created_at,updated_at,upvotes,comments,signals,area,area_en,severity,frequency_key,willingness_to_pay_key,source_key,source_url,region,who,problem,workaround,extra
+1,示例：不会用智能手机的老人无法线上挂号,https://github.com/010egg/human-needs/issues/1,open,待整理,False,2026-11-15T11:53:17Z,2026-11-15T11:53:24Z,0,0,0,养老,Elderly,4,monthly,little,observed,,中国,不会用智能手机的老年人，以及他们在外地工作的子女,（示例需求）家里老人 70 多岁，当地医院取消了现场挂号窗口，只能用手机 App 或公众号预约。老人不会操作智能手机，看不清小字，验证码也收不明白。每次看病都得子女请假回去帮忙挂号，急病时更麻烦。,子女远程代挂号，或者请邻居帮忙；有时直接去医院排队找志愿者，经常挂不上号，白跑一趟。,这是一条示例需求，用来展示该怎么写：描述问题和场景，而不是直接给出解决方案。
